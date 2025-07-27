@@ -1,4 +1,4 @@
-# dashboard/streamlit_app/app.py
+# streamlit_app/app.py
 
 import streamlit as st
 import pandas as pd
@@ -7,8 +7,8 @@ import seaborn as sns
 import sys
 import os
 
-# Add src to path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+# Add src to path (since we're now in streamlit_app inside root folder)
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from src.inference import predict_failure, apply_risk_level
 from src.preprocess import preprocess_data
 
@@ -16,17 +16,17 @@ from src.preprocess import preprocess_data
 st.set_page_config(page_title="🏭 Equipment Failure Dashboard", layout="wide")
 st.title(" Factory Equipment Failure Prediction System")
 
-#  Note for Recruiters
+#  Note for Users
 st.info(
-    " **Note for Users:**\n"
-    "To test the system, please first download the sample CSV file below. "
-    "This file contains the correct sensor data format required by the model.\n\n"
-    "** Please do not upload any other CSV — it may result in errors.**"
+    " **Note:**\n"
+    "To test the system, please download the sample CSV below. "
+    "This file contains sensor data in the correct format for the prediction model.\n\n"
+    "**Do not upload other CSVs — it may break the app.**"
 )
 
 # ✅ Download sample CSV
 try:
-    sample_df = pd.read_csv("data/synthetic_sensor_data.csv")  # Path to sample file
+    sample_df = pd.read_csv("data/synthetic_sensor_data.csv")
     csv = sample_df.to_csv(index=False).encode("utf-8")
     st.download_button(
         label="⬇️ Download Sample Sensor CSV",
@@ -35,7 +35,7 @@ try:
         mime="text/csv"
     )
 except FileNotFoundError:
-    st.warning("⚠️ Sample CSV file not found. Please ensure it exists in the 'data/' directory.")
+    st.warning("⚠️ Sample CSV file not found. Please place it in the 'data/' folder.")
 
 # 📤 Upload CSV
 uploaded_file = st.file_uploader("📁 Upload sensor data (CSV)", type="csv")
